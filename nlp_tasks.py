@@ -59,7 +59,16 @@ def prob3(bigram, cnt2, cnt3):
 
 def predict_max(starting, cnt2, cnt3):
 	"""automatically complete sentence given start"""
-	
+	sent = [starting]
+	tail_bigram = starting
+	while sent[-1] != '.' or len(sent) < 15:
+		prob = prob3(tail_bigram, cnt2, cnt3)
+		sorted_prob = sorted(prob.items(), key=lambda x: x[1], reverse=True)
+		w3,_ = sorted_prob[0]
+		w1, w2 = tail_bigram
+		tail_bigram = (w2, w3)
+		sent.append(w3)
+	return sent
 
 
 def predict_beam(bigram, beam_size, sent_len, cnt2, cnt3):
